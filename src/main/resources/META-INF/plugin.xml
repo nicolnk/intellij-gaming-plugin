@@ -1,0 +1,51 @@
+<idea-plugin>
+    <id>com.codequest.plugin</id>
+    <n>CodeQuest</n>
+    <version>1.0.0</version>
+    <vendor email="contact@codequest.dev" url="https://codequest.dev">CodeQuest</vendor>
+
+    <description><![CDATA[
+        🎮 <b>CodeQuest</b> — Gamifiez votre expérience de développement !<br/><br/>
+        Gagnez de l'XP en codant, compilant, testant et commitant.
+        Débloquez des succès, accomplissez des missions journalières,
+        montez en niveau et grimpez dans les rangs de Junior à Légende.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.plugins.terminal</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <toolWindow
+                id="CodeQuest"
+                anchor="right"
+                factoryClass="com.codequest.ui.CodeQuestToolWindowFactory"
+                icon="/icons/codequest.svg"
+                secondary="true"/>
+
+        <statusBarWidgetFactory
+                id="CodeQuestWidget"
+                implementation="com.codequest.ui.CodeQuestStatusBarWidgetFactory"
+                order="first"/>
+
+        <applicationService serviceImplementation="com.codequest.services.PlayerStateService"/>
+        <applicationService serviceImplementation="com.codequest.services.MissionService"/>
+        <applicationService serviceImplementation="com.codequest.services.XpService"/>
+        <applicationService serviceImplementation="com.codequest.services.AchievementService"/>
+
+        <postStartupActivity implementation="com.codequest.listeners.CodeQuestStartupActivity"/>
+
+        <notificationGroup id="CodeQuest Notifications" displayType="BALLOON"/>
+
+        <vcsCheckinHandlerFactory implementation="com.codequest.listeners.VcsCommitListener"/>
+
+    </extensions>
+
+    <projectListeners>
+        <listener
+                class="com.codequest.listeners.BuildResultListener"
+                topic="com.intellij.task.ProjectTaskListener"/>
+    </projectListeners>
+
+</idea-plugin>
