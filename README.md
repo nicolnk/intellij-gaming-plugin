@@ -123,3 +123,4 @@ Pour modifier les gains XP : éditez les constantes dans `XpService`
 
 - [ ] Support Windows (hook PowerShell)
 - [ ] Résolution de bug build flutter non détecté dans les stats
+- [ ] Résolution de bug commit via ui intelliJ non détecté dans les stats
