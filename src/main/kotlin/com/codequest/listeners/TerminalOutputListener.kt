@@ -63,13 +63,14 @@ class TerminalOutputListener(private val project: Project) {
             cmd.startsWith("git commit") && success -> xp.onCommit(project)
             cmd.startsWith("git push") && success   -> xp.onCommit(project)
 
-            // Flutter / Dart
-            (cmd.startsWith("flutter run") ||
-                    cmd.startsWith("flutter build") ||
-                    cmd.startsWith("dart run") ||
-                    cmd.startsWith("dart compile")) && success -> xp.onSuccessfulBuild(project)
-            (cmd.startsWith("flutter run") ||
-                    cmd.startsWith("flutter build")) && !success -> xp.onFailedBuild()
+            // Flutter / Dart — run interactif : succès si exit 0 ou Ctrl+C (exit 130, app lancée puis arrêtée)
+            (cmd.startsWith("flutter run") || cmd.startsWith("dart run")) &&
+                    (exitCode == 0 || exitCode == 130) -> xp.onSuccessfulBuild(project)
+            // Flutter / Dart — build et compile : succès uniquement si exit 0
+            (cmd.startsWith("flutter build") || cmd.startsWith("dart compile")) && success -> xp.onSuccessfulBuild(project)
+            // Flutter — build échoué (Ctrl+C exclu car ce n'est pas une erreur de build)
+            (cmd.startsWith("flutter run") || cmd.startsWith("flutter build")) &&
+                    !success && exitCode != 130 -> xp.onFailedBuild()
 
             // Flutter test
             cmd.startsWith("flutter test") && success -> xp.onTestsPassed(1, project)

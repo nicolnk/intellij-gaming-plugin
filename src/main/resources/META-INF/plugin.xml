@@ -38,7 +38,7 @@
 
         <notificationGroup id="CodeQuest Notifications" displayType="BALLOON"/>
 
-        <vcsCheckinHandlerFactory implementation="com.codequest.listeners.VcsCommitListener"/>
+        <checkinHandlerFactory implementation="com.codequest.listeners.VcsCommitListener"/>
 
     </extensions>
 
